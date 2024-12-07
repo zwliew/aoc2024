@@ -1,7 +1,7 @@
 module Day2 where
 
-import Data.Maybe (isNothing)
-import GHC.Data.Maybe (fromJust)
+import Data.Maybe (fromJust, isNothing)
+import Utils (getInput)
 
 parseInput :: String -> [[Int]]
 parseInput = map parseLine . lines
@@ -13,16 +13,11 @@ parseInput = map parseLine . lines
         [] -> []
         _ -> error "parseLine: ambiguous parse"
 
-getInput :: IO [[Int]]
-getInput = do
-    input <- readFile "inputs/day2.txt"
-    return $ parseInput input
-
 isSafe :: Int -> [Int] -> Bool
 isSafe n xs = walkLevels ascendingPred n Nothing xs || walkLevels descendingPred n Nothing xs
   where
     ascendingPred x y = y - x >= 1 && y - x <= 3
-    descendingPred x y = ascendingPred y x
+    descendingPred = flip ascendingPred
 
     walkLevels :: (Int -> Int -> Bool) -> Int -> Maybe Int -> [Int] -> Bool
     walkLevels _ _ _ [] = True
@@ -34,12 +29,12 @@ isSafe n xs = walkLevels ascendingPred n Nothing xs || walkLevels descendingPred
 
 solve1 :: IO String
 solve1 = do
-    xs <- getInput
+    xs <- getInput 2 parseInput
     let trueCount = length $ filter id $ map (isSafe 0) xs
     return $ show trueCount
 
 solve2 :: IO String
 solve2 = do
-    xs <- getInput
+    xs <- getInput 2 parseInput
     let trueCount = length $ filter id $ map (isSafe 1) xs
     return $ show trueCount

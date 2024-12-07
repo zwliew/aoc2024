@@ -20,3 +20,15 @@ pairs :: [a] -> [(a, a)]
 pairs [] = []
 pairs [_] = []
 pairs (x : x' : xs) = (x, x') : pairs (x' : xs)
+
+indexed :: [a] -> [(Int, a)]
+indexed = zip [0 ..]
+
+last2 :: [a] -> Maybe (a, a)
+last2 [] = Nothing
+last2 [_] = Nothing
+last2 [x, y] = Just (x, y)
+last2 (_ : xs) = last2 xs
+
+getInput :: Int -> (String -> a) -> IO a
+getInput n parse = parse <$> readFile ("inputs/day" ++ show n ++ ".txt")
