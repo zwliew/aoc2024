@@ -30,5 +30,11 @@ last2 [_] = Nothing
 last2 [x, y] = Just (x, y)
 last2 (_ : xs) = last2 xs
 
+dropLast :: Int -> [a] -> [a]
+dropLast n = reverse . drop n . reverse
+
+numDigits :: Int -> Int
+numDigits = length . show
+
 getInput :: Int -> (String -> a) -> IO a
 getInput n parse = parse <$> readFile ("inputs/day" ++ show n ++ ".txt")
