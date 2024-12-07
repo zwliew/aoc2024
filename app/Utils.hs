@@ -1,6 +1,7 @@
 module Utils where
 
 import Data.List (sort)
+import Data.Maybe (fromMaybe)
 
 counts :: [Int] -> [(Int, Int)]
 counts = map (\xs -> (head xs, length xs)) . group . sort
@@ -35,6 +36,20 @@ dropLast n = reverse . drop n . reverse
 
 numDigits :: Int -> Int
 numDigits = length . show
+
+splitOn :: (Eq a) => a -> [a] -> [[a]]
+splitOn _ [] = []
+splitOn c xs = ys : splitOn c rest
+  where
+    (ys, zs) = break (== c) xs
+    rest = fromMaybe [] . tailMay $ zs
+
+tailMay :: [a] -> Maybe [a]
+tailMay [] = Nothing
+tailMay (_ : xs) = Just xs
+
+middle :: [a] -> a
+middle xs = xs !! (length xs `div` 2)
 
 getInput :: Int -> (String -> a) -> IO a
 getInput n parse = parse <$> readFile ("inputs/day" ++ show n ++ ".txt")
