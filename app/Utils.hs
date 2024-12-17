@@ -1,5 +1,6 @@
 module Utils where
 
+import Data.IntMap.Strict (IntMap, fromListWith)
 import Data.List (sort)
 import Data.Maybe (fromMaybe)
 
@@ -53,3 +54,6 @@ middle xs = xs !! (length xs `div` 2)
 
 getInput :: Int -> (String -> a) -> IO a
 getInput n parse = parse <$> readFile ("inputs/day" ++ show n ++ ".txt")
+
+frequencies :: [Int] -> IntMap Int
+frequencies = fromListWith (+) . map (,1)
